@@ -32,13 +32,22 @@ def showImage():
 model = keras.Sequential([ # sequence of layers definition
     keras.layers.Flatten(input_shape=(28,28)), # input mnist images are 28*28 pixels
     keras.layers.Dense(128, activation="relu"), # 128 neurons, rectified linear unit/relu, first hidden layer
-    keras.layers.Dense(10, activation="softmax") # 10 neurons, softmax distributes values so that sum is 1
+    keras.layers.Dense(10, activation="softmax") # 10 output neurons due to 10 class names/labels, softmax distributes values from 0 to 1, i.e. individual label probability.
 ])
 
 model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
 model.fit(train_images, train_labels, epochs=5) # trigger actual training
 
-test_loss, test_accuracy = model.evaluate(test_images, test_labels)
+# test_loss, test_accuracy = model.evaluate(test_images, test_labels)
+# print("Tested accuracy: ", test_accuracy)
 
-print("Tested accuracy: ", test_accuracy)
+prediction = model.predict(test_images) # input is/ has to be a list
+# print(class_names[np.argmax(prediction[1])])
+
+for i in range(5):
+    plt.grid(False)
+    plt.imshow(test_images[i], cmap=plt.cm.binary)
+    plt.xlabel("Actual label: " + class_names[test_labels[i]])
+    plt.title("Prediction: " + class_names[np.argmax(prediction[i])])
+    plt.show()
