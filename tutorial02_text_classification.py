@@ -4,6 +4,8 @@ import numpy as np
 # I had numpy 1.16.3, tutorial needed specific version:
 # pip install numpy==1.16.1
 
+print("TensorFlow version: ", tf.__version__)
+
 data = keras.datasets.imdb
 
 (train_data, train_labels), (test_data, test_labels) = data.load_data(num_words=10000) # use only 10000 most used words
