@@ -10,7 +10,9 @@ Additional information for specific topics:
 
 ### Image Classification
  - [Basic classification: Classify images of clothing](https://www.tensorflow.org/tutorials/keras/classification)
+ used in tutorial01
 
 ### Text Classification
  - [Text classification with movie reviews](https://www.tensorflow.org/tutorials/keras/text_classification)
+ used in tutorial02 and tutorial03
 
