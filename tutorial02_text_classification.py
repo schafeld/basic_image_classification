@@ -31,19 +31,46 @@ test_data = keras.preprocessing.sequence.pad_sequences(train_data, value=word_in
 # print(len(train_data), len(test_data)) # check that training and testing data have same lenght
 # print(len(test_data[0]), len(test_data[1]))
 
+
+def decode_review(text):
+    return " ".join([reverse_word_index.get(i, "?") for i in text])
+
 ## Debugging output
-# def decode_review(text):
-#     return " ".join([reverse_word_index.get(i, "?") for i in text])
-#
 # print(decode_review(test_data[1]))
 
 
-# Model definition
-
+## Model definition
+# define layers
 model = keras.Sequential()
 model.add(keras.layers.Embedding(10000, 16))
 model.add(keras.layers.GlobalAveragePooling1D())
 model.add(keras.layers.Dense(16, activation="relu"))
-model.add(keras.layers.Dense(1, activation="sigmoid"))
+model.add(keras.layers.Dense(1, activation="sigmoid")) # sigmoid -> 0...1
 
 model.summary()
+
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"]) # binary_crossentropy -> 1 || 0
+
+x_val = train_data[:10000] # take first 10,000 datasets from data for validation
+x_train = train_data[10000:] # take remaining datasets from data for training
+
+y_val = train_labels[:10000] # take first 10,000 datasets from labels for validation
+y_train = train_labels[10000:] # take remaining datasets from labels for training
+
+# fit model
+
+fitModel = model.fit(x_train, y_train, epochs=40, batch_size=512, validation_data=(x_val, y_val), verbose=1)
+
+results = model.evaluate(test_data, test_labels)
+
+print(results) # My output diverts clearly from tutorial (very low accuracy and high loss in last iteration).
+
+
+# Test prediction
+test_review = test_data[0]
+predict = model.predict([test_review])
+print("Review: ")
+print(decode_review(test_review))
+print("Prediction: " + str(predict[0]))
+print("Actual: " + str(test_labels[0]))
+print(results)
