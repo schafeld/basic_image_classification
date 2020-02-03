@@ -74,3 +74,7 @@ print(decode_review(test_review))
 print("Prediction: " + str(predict[0]))
 print("Actual: " + str(test_labels[0]))
 print(results)
+
+# This code seems to predict rubbish
+# Maybe try the official tutorial instead:
+# https://www.tensorflow.org/tutorials/keras/text_classification
